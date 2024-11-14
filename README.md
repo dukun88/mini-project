@@ -25,12 +25,13 @@ Register CNAME for Validation by clicking “Create Records in Route53”  <br /
 Check DNS in Route53 whether the CNAME was successfully added  <br />
 Check again whether the certificate is valid and applied to DNS  <br />
 
-
-
-
 ## 3. Creating Security Groups for EC2, RDS, and ALB
 ### Architecture with OpenVPN and VPC Information
 ![3](https://github.com/user-attachments/assets/46c2b265-91bd-4c2f-bd13-a88547de9144)
+#### Create a VPC and Subnet with a diagram as follows:
+
+#### Create OpenVPN for DevOps setup and access Private Resources
+
 
 ### Creating a Security Group
 ![4](https://github.com/user-attachments/assets/9a851805-a28f-4d59-b613-99a4a80fb548)
