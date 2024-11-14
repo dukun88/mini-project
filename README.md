@@ -4,6 +4,29 @@
 
 ## 2. Creating Domains on Route53 and ACM
 ![2](https://github.com/user-attachments/assets/24598ac5-29a0-40a0-8a71-e110305ad156)
+### Register Domain on Route53
+
+Search Route53 on AWS console page
+Click “Regitered Domains” in the bar
+“Regiter Domain” to create a new domain
+Enter the domain name that will be used (make sure the domain is available)(“Proceed to Checkout”)
+Then determine how long the contract is according to the budget or rental year, also determine whether we want to automatically renew or not (“Next”)
+Then fill in the appropriate domain orderer's personal data (“Next”)
+Review and submit the domain order (“Submit”)
+
+### Request Certificate in ACM
+
+Search ACM (AWS certificate manager) on AWS console page
+Click “Request” to request a new certificate
+Select “Public certificate”
+Then fill in the domain name to be registered, also register the sub-domain by adding (*.) to the domain prefix
+Use validation method (DNS / Email), and Select key algorithm (RSA, .etc) (“Request”)
+Register CNAME for Validation by clicking “Create Records in Route53”
+Check DNS in Route53 whether the CNAME was successfully added
+Check again whether the certificate is valid and applied to DNS
+
+
+
 
 ## 3. Creating Security Groups for EC2, RDS, and ALB
 ### Architecture with OpenVPN and VPC Information
