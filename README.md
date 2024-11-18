@@ -57,6 +57,7 @@ IPv4 VPC CIDR block : "10.1.0.0/16"<br />
 IPv4 subnet CIDR block : "10.1.1.0/26"<br />
 <br />
 Add new subnet <br />
+<br />
 *Subnet 2 of 3*
 <br />
 Subnet name : "isw-private-subnet-app-a"<br />
@@ -65,6 +66,7 @@ IPv4 VPC CIDR block : "10.1.0.0/16"<br />
 IPv4 subnet CIDR block : "10.1.1.128/27"<br />
 <br />
 Add new subnet <br />
+<br />
 *Subnet 3 of 3*
 <br />
 Subnet name : "isw-private-subnet-app-a"<br />
@@ -97,13 +99,19 @@ Network settings:<br />
  6. Inbound security group rules: default <br />
 "Launh Instance" <br />
 <br />
+
 **Setup OpenVpn** <br />
+
 <br />
 Login to openvpn
 <br />
+
 ```
-ssh -i keypair.pem root@ipOpenvpn
+
+$ssh -i keypair.pem root@ipOpenvpn
+
 ```
+
 <br />
 follow the setup instructions
 <br />
