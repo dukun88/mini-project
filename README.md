@@ -33,7 +33,7 @@ Check again whether the certificate is valid and applied to DNS  <br />
 
 ![Your paragraph text](https://github.com/user-attachments/assets/2487ba04-c423-42c7-872a-43d784b6a6c4)
 
-***Create VPC***<br />
+***Create VPC*** <br />
 <br />
 Search VPC on the AWS console page <br />
 Select "Create VPC" <br />
@@ -44,7 +44,7 @@ Enter an IPv4 CIDR block : "10.1.0.0/16" <br />
 Tenancy : "default" <br />
 Select Create VPC
 <br />
-***Create Subnets***<br />
+***Create Subnets*** <br />
 <br />
 Select Subnets on Bar VPC Resource <br />
 Select "Create Subnet" <br />
@@ -94,7 +94,7 @@ Network settings:<br />
  6. Inbound security group rules: default <br />
 "Launh Instance" <br />
 <br />
-***Configuration OpenVpn***<br />
+***Setup OpenVpn*** <br />
 Login to openvpn <br />
 ```ssh -i keypair.pem root@ipOpenvpn```<br />
 follow the setup instructions <br />
