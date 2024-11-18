@@ -29,10 +29,12 @@ Check again whether the certificate is valid and applied to DNS  <br />
 ### Architecture with OpenVPN and VPC Information
 ![3](https://github.com/user-attachments/assets/46c2b265-91bd-4c2f-bd13-a88547de9144)
 #### Create a VPC and Subnet with a diagram as follows:
+<br />
 
 ![Your paragraph text](https://github.com/user-attachments/assets/2487ba04-c423-42c7-872a-43d784b6a6c4)
 
-***Create VPC***
+***Create VPC***<br />
+<br />
 Search VPC on the AWS console page <br />
 Select "Create VPC" <br />
 Resource to create : "VPC only" <br />
@@ -42,7 +44,8 @@ Enter an IPv4 CIDR block : "10.1.0.0/16" <br />
 Tenancy : "default" <br />
 Select Create VPC
 <br />
-***Create Subnets***
+***Create Subnets***<br />
+<br />
 Select Subnets on Bar VPC Resource <br />
 Select "Create Subnet" <br />
 VPC ID : "Use the VPC ID that we created previously" <br />
@@ -69,8 +72,35 @@ IPv4 subnet CIDR block : "10.1.1.192/27"<br />
 <br />
 *Connect the public subnet to the internet gateway using route tables* <br />
 *Connect the private subnet to the NAT gateway using route tables*<br />
+<br />
 #### Create OpenVPN for DevOps setup and access Private Resources
-
+<br />
+Search EC2 Instance on AWS console page  <br />
+Click “Launch Instances” to create new instance  <br />
+Name : "isw-openvpn" <br />
+Select "Browse more AMIs"<br />
+Search "Openvpn" on search bar <br />
+Select "OpenVPN Acces server" <br />
+Click "Subcribe now" <br />
+Instance type : t2.micro <br />
+Key pair : "Create new key pair"<br />
+*Make sure you store the key pair safely*<br />
+Network settings:<br />
+ 1. VPC : Use the VPC that we created previously <br />
+ 2. Subnet : Use the Public-subnet<br />
+ 3. Auto-assign public IP : Enable <br />
+ 4. Security group name : Replace name with "my-openvpn-sg" <br />
+ 5. Description : default<br />
+ 6. Inbound security group rules: default <br />
+"Launh Instance" <br />
+<br />
+***Configuration OpenVpn***<br />
+Login to openvpn <br />
+```ssh -i keypair.pem root@ipOpenvpn```<br />
+follow the setup instructions <br />
+*Try to log in to the admin page with the username and password that we specified during setup* <br />
+ipOpenvpn:943/admin (for Admin) <br />
+ipOpenvpn:943 (for Client)<br />
 
 ### Creating a Security Group
 ![4](https://github.com/user-attachments/assets/9a851805-a28f-4d59-b613-99a4a80fb548)
