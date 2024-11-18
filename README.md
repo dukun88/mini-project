@@ -96,11 +96,14 @@ Network settings:<br />
 <br />
 ***Setup OpenVpn*** <br />
 <br />
-Login to openvpn <br />
+Login to openvpn
+<br />
 ```ssh -i keypair.pem root@ipOpenvpn```
 <br />
-follow the setup instructions <br />
+follow the setup instructions
+<br />
 *Try to log in to the admin page with the username and password that we specified during setup* <br />
+<br />
 ipOpenvpn:943/admin (for Admin) <br />
 ipOpenvpn:943 (for Client)<br />
 
