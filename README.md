@@ -42,7 +42,7 @@ Enter a name VPC : "isw-vpc" <br />
 Enter an IPv4 CIDR block : "10.1.0.0/16" <br />
 "No IPv6 CIDR Block" In Ipv6 CIDR block <br />
 Tenancy : "default" <br />
-Select Create VPC
+Select Create VPC <br />
 <br />
 ***Create Subnets*** <br />
 <br />
@@ -95,6 +95,7 @@ Network settings:<br />
 "Launh Instance" <br />
 <br />
 ***Setup OpenVpn*** <br />
+<br />
 Login to openvpn <br />
 ```ssh -i keypair.pem root@ipOpenvpn```<br />
 follow the setup instructions <br />
