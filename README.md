@@ -30,6 +30,45 @@ Check again whether the certificate is valid and applied to DNS  <br />
 ![3](https://github.com/user-attachments/assets/46c2b265-91bd-4c2f-bd13-a88547de9144)
 #### Create a VPC and Subnet with a diagram as follows:
 
+![Your paragraph text](https://github.com/user-attachments/assets/2487ba04-c423-42c7-872a-43d784b6a6c4)
+
+***Create VPC***
+Search VPC on the AWS console page <br />
+Select "Create VPC" <br />
+Resource to create : "VPC only" <br />
+Enter a name VPC : "isw-vpc" <br />
+Enter an IPv4 CIDR block : "10.1.0.0/16" <br />
+"No IPv6 CIDR Block" In Ipv6 CIDR block <br />
+Tenancy : "default" <br />
+Select Create VPC
+<br />
+***Create Subnets***
+Select Subnets on Bar VPC Resource <br />
+Select "Create Subnet" <br />
+VPC ID : "Use the VPC ID that we created previously" <br />
+*Subnet 1 of 3*
+Subnet name : "isw-public-subnet-a"<br />
+Availability Zone : "select the one you want to use"<br />
+IPv4 VPC CIDR block : "10.1.0.0/16"<br />
+IPv4 subnet CIDR block : "10.1.1.0/26"<br />
+<br />
+Add new subnet <br />
+*Subnet 2 of 3*
+Subnet name : "isw-private-subnet-app-a"<br />
+Availability Zone : "Select the same as public subnet"<br />
+IPv4 VPC CIDR block : "10.1.0.0/16"<br />
+IPv4 subnet CIDR block : "10.1.1.128/27"<br />
+<br />
+Add new subnet <br />
+*Subnet 3 of 3*
+Subnet name : "isw-private-subnet-app-a"<br />
+Availability Zone : "Select the same as public subnet<br />
+IPv4 VPC CIDR block : "10.1.0.0/16"<br />
+IPv4 subnet CIDR block : "10.1.1.192/27"<br />
+"Create Subnet" <br />
+<br />
+*Connect the public subnet to the internet gateway using route tables* <br />
+*Connect the private subnet to the NAT gateway using route tables*<br />
 #### Create OpenVPN for DevOps setup and access Private Resources
 
 
