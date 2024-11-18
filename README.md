@@ -84,7 +84,7 @@ Select "OpenVPN Acces server" <br />
 Click "Subcribe now" <br />
 Instance type : t2.micro <br />
 Key pair : "Create new key pair"<br />
-*Make sure you store the key pair safely*<br />
+*Make sure you store the key pair safely* <br />
 Network settings:<br />
  1. VPC : Use the VPC that we created previously <br />
  2. Subnet : Use the Public-subnet<br />
@@ -97,7 +97,8 @@ Network settings:<br />
 ***Setup OpenVpn*** <br />
 <br />
 Login to openvpn <br />
-```ssh -i keypair.pem root@ipOpenvpn```<br />
+```ssh -i keypair.pem root@ipOpenvpn```
+<br />
 follow the setup instructions <br />
 *Try to log in to the admin page with the username and password that we specified during setup* <br />
 ipOpenvpn:943/admin (for Admin) <br />
