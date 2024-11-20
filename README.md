@@ -191,7 +191,6 @@ Click "Launch Instances" to create new EC2 instance <br />
 
 ### Creating RDS
 ### Creating ALB
-<br />
 ## 5. Creating a Simple Frontend (ReactJS + Nginx)
 ![6](https://github.com/user-attachments/assets/f36f7dcd-3aa1-438e-b6da-659d1d6a7fbf)
 
