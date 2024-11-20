@@ -89,7 +89,9 @@ Select "OpenVPN Acces server" <br />
 Click "Subcribe now" <br />
 Instance type : t2.micro <br />
 Key pair : "Create new key pair"<br />
-*Make sure you store the key pair safely* <br />
+<br />
+*Make sure you store the key pair safely*<br />
+<br />
 Network settings:<br />
  1. VPC : Use the VPC that we created previously <br />
  2. Subnet : Use the Public-subnet<br />
@@ -113,9 +115,9 @@ $ssh -i keypair.pem root@ipOpenvpn
 ```
 
 <br />
-follow the setup instructions
+follow the setup instructions<br />
 <br />
-*Try to log in to the admin page with the username and password that we specified during setup* <br />
+*Try to log in to the admin page with the username and password that we specified during setup*<br />
 <br />
 ipOpenvpn:943/admin (for Admin) <br />
 ipOpenvpn:943 (for Client)<br />
@@ -127,43 +129,52 @@ Search Security Group on AWS console page <br />
 Click "Create Security group" to create new security group <br />
 <br />
 ***Security Group LoadBalancer*** <br />
+<br />
 Name : my-app-alb-sg <br />
 Description : my-app-alb-sg <br />
 VPC : Use the VPC that we created previously <br />
 *Inbound rules* <br />
 Add rules according to the diagram : <br />
-1. Type : HTTP, Port : 80, Source : Anywhere IPv4 (0.0.0.0/0) <br />
-2. Type : HTTPS, Port : 443, Source : Anywhwre IPv4 (0.0.0.0/0) <br />
+<br />
+1.Type : HTTP, Port : 80, Source : Anywhere IPv4 (0.0.0.0/0) <br />
+2.Type : HTTPS, Port : 443, Source : Anywhwre IPv4 (0.0.0.0/0) <br />
+<br />
 *Outbound rules* <br />
 Default (0.0.0.0/0) <br />
 Add tag Name : my-app-alb-sg <br />
 "Create Security Group" <br />
 <br />
 ***Security Group App Ec2*** <br />
+<br />
 Name : my-app-ec2-sg <br />
 Description : my-app-ec2-sg <br />
 VPC : Use the VPC that we created previously <br />
 *Inbound rules* <br />
 Add rules according to the diagram : <br />
-1. Type : SSH, Port : 22, Source : my-openvpn-sg <br />
-2. Type : Custom TCP, Port : 3000, Source : my-openvpn-sg <br />
-3. Type : Custom TCP, Port : 8080, Source : my-openvpn-sg <br />
-4. Type : Custom TCP, Port : 8080, Source : my-app-alb-sg <br />
-5. Type : HTTP, Port : 80, Source : my-app-alb-sg <br />
-6. Type : HTTPS, Port : 443, Source : my-app-alb-sg <br />
+<br />
+1.Type : SSH, Port : 22, Source : my-openvpn-sg <br />
+2.Type : Custom TCP, Port : 3000, Source : my-openvpn-sg <br />
+3.Type : Custom TCP, Port : 8080, Source : my-openvpn-sg <br />
+4.Type : Custom TCP, Port : 8080, Source : my-app-alb-sg <br />
+5.Type : HTTP, Port : 80, Source : my-app-alb-sg <br />
+6.Type : HTTPS, Port : 443, Source : my-app-alb-sg <br />
+<br />
 *Outbound rules* <br />
 Default (0.0.0.0/0) <br />
 Add tag Name : my-app-ec2-sg <br /> 
 "Create Security Group" <br />
 <br />
 ***Security Group App Database*** <br />
+<br />
 Name : my-app-rds-sg <br />
 Description : my-app-rds-sg <br />
 VPC : Use the VPC that we created previously <br />
 *Inbound rules* <br />
 Add rules according to the diagram : <br />
-1. Type : MYSQL, Port : 3306, Source : my-openvpn-sg <br />
-2. Type : MYSQL, Port : 3306, Source : my-app-alb-sg <br />
+<br />
+1.Type : MYSQL, Port : 3306, Source : my-openvpn-sg <br />
+2.Type : MYSQL, Port : 3306, Source : my-app-alb-sg <br />
+<br />
 *Outbound rules* <br />
 Default (0.0.0.0/0) <br />
 Add tag Name : my-app-rds-sg <br /> 
@@ -173,7 +184,14 @@ Add tag Name : my-app-rds-sg <br />
 
 ## 4. Create EC2, RDS, and ALB
 ![5](https://github.com/user-attachments/assets/8ff11ffc-3067-42f5-b1cf-5859ea2c77e8)
+<br />
+### Creating EC2
+Search EC2 on AWS console page <br />
+Click "Launch Instances" to create new EC2 instance <br />
 
+### Creating RDS
+### Creating ALB
+<br />
 ## 5. Creating a Simple Frontend (ReactJS + Nginx)
 ![6](https://github.com/user-attachments/assets/f36f7dcd-3aa1-438e-b6da-659d1d6a7fbf)
 
