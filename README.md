@@ -188,9 +188,148 @@ Add tag Name : my-app-rds-sg <br />
 ### Creating EC2
 Search EC2 on AWS console page <br />
 Click "Launch Instances" to create new EC2 instance <br />
+Name and tag = my-app-ec2 <br />
+Applications and OS image (AMI) =  Amazon Linux <br />
+Instance type = t3.micro <br />
+Keypair = keypair that we have created <br />
+<br />
+*Network Settings* <br />
+VPC = isw-vpc <br />
+Subnet = isw-private-subnet-a <br />
+Auto-assign public ip = Disable <br />
+Firewall = Select existing security group (my-app-ec2-sg) <br />
+Configure Storage = Default <br />
+"Launch Instance" <br />
 
 ### Creating RDS
+<br />
+*Before creating RDS, we create a "Subnet group" first*<br />
+<br />
+Search RDS on AWS console page <br />
+Select "Subnet groups" on side bar <br />
+Click "Create DB subnet group" <br />
+<br />
+**Subnet group details**<br />
+Name = my-db-sbg <br />
+Description = my-db-sbg <br />
+VPC = isw-vpc <br />
+<br />
+**Add Subnet** <br />
+<br />
+*Because we need at least 2 Availability zones, we create a new subnet in a different Availability zone* <br />
+After creating a new subnet we select both availability zone and subnet. <br />
+"Create" <br />
+<br />
+**Create Database** <br />
+Select Databases on side bar <br />
+Click "Create Database" <br />
+Choose a Database creation method = Standard create <br />
+Engine Options = MySQL <br />
+Choose Version = Latest (Recomended) <br />
+Templates = Dev/Test <br />
+Availability And Durability = Single-DB-instance <br />
+DB instance identifier = my-app-db-rds <br />
+Master Username = root <br />
+Credentials management = Self-Managed <br />
+Master password = Create password for admin Database <br />
+Confirm Master password = reEnter the password <br />
+Instance configuration = Burstable classer (db.t3.micro)<br />
+Storage = Default <br />
+<br />
+*Conectivity*<br />
+<br />
+VPC = isw vpc <br />
+DB subnet group = my-db-sbg <br />
+Public access = no <br />
+VPC Security group = Choose existing (my-app-rds-sg) <br />
+Availability Zone = Choose the same as ec2 <br />
+"Create Database" <br/>
+<br />
+
 ### Creating ALB
+<br />
+*Before creating an ALB, we create a "Target group" first*<br />
+<br />
+Search "Target Group" on AWS console page <br />
+Click "Create target group" <br />
+Choose target type = Instances <br />
+Target group name = My-app-ec2-tg-80 <br />
+Protocol:Port = HTTP(80) <br />
+IP address type = IPv4 <br />
+VPC = isw-vpc <br />
+Health Checks point = Overide (80) <br />
+"Next" <br />
+Regiter Target = Select Ec2 app <br />
+"Include As pending below"<br />
+"Create" <br />
+<br />
+***Repeat the steps for backend port 8080*** <br />
+<br />
+*then we create a new public subnet because we need 2 Availability zones to create a loadbalancer*<br />
+<br />
+**Create Loadbalancer**<br />
+<br />
+Select "Load balancer" on sidebar Ec2 Service <br />
+Click "Create load balancer" <br />
+Load balancer type = Application load balancer <br />
+<br />
+*Network mappings*<br />
+<br />
+VPC = isw-vpc <br />
+Security Group = my-app-alb-sg <br />
+Listening and routing : <br/>
+Protocol = HTTP <br />
+Port = 80 <br />
+Target group = my-app-ec2-tg-80 <br />
+{Add Listener} <br />
+Protocol = HTTPS <br />
+Port = 443 <br />
+Target group = my-app-ec2-tg-80 <br />
+Default SSL/TLS Server Certificate : <br />
+Certificate Source = from ACM <br />
+Certificate = The certificate we create before <br />
+Review And "Create Load Balancer" <br />
+<br />
+**Edit Rule ALB** <br />
+<br />
+Click "my-app-lb" <br />
+Select "HTTP:80" <br />
+"Manage Rules" -> "Edit Rules" <br />
+Select listener Rules <br />
+"Actions" -> "Edit Rules" <br />
+Routing Actions = Redirect to URL <br />
+Protocol = HTTPS(443) <br />
+"Save Changes"<br />
+<br />
+*Add rule to API*<br />
+<br />
+Select "HTTPS:443" <br />
+"Manage Rules" -> "Edit rule" <br />
+Click "Add Rule" <br />
+Name = (optional) -> "Next" <br />
+Add condition = Host header -> api.domain.net (Confirm) <br />
+"Next" <br />
+Routing Actions = Forward to target group  -> "Next" <br />
+Rule = Priority (1) <br />
+"Create" <br />
+<br />
+**Create Recored DNS name ALB to Route53** <br/>
+<br />
+Search "Route53" on AWS console page <br />
+Select "Hosted Zones" <br />
+*Click on your Domain* <br/>
+Click "Create Record" <br />
+Record name = www <br />
+Record type = A <br />
+Turn on Alias <br />
+Rute traffic to = Alias to ALB <br />
+Region = Adjust to ALB <br />
+Select the ALB that we created previously <br />
+"Create Records" <br />
+<br />
+*Repeat these steps to type the record name api.domain.net*<br />
+<br />
+
 ## 5. Creating a Simple Frontend (ReactJS + Nginx)
 ![6](https://github.com/user-attachments/assets/f36f7dcd-3aa1-438e-b6da-659d1d6a7fbf)
 
