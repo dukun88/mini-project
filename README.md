@@ -332,9 +332,105 @@ Select the ALB that we created previously <br />
 
 ## 5. Creating a Simple Frontend (ReactJS + Nginx)
 ![6](https://github.com/user-attachments/assets/f36f7dcd-3aa1-438e-b6da-659d1d6a7fbf)
+### React Setup <br />
+- install node.js and npx <br /> 
+- create a new react project <br />
+<br />
+`npx create-react-app` <br />
+<br />
+- change the script in the App.js file in the src folder <br />
+- Build apps <br />
+<br />
+ `npm run build` <br />
+ <br />
+- Test App <br />
+<br />
+`server -s build` <br />
+<br />
+<br />
+### Setup Nginx <br />
 
+- Log in to the ec2-app server and install nginx <br />
+<br />
+
+```
+ssh -i keypair.pem user@<IpEc2app>
+
+sudo apt update
+sudo apt install nginx
+
+```
+<br />
+*** Make sure your connection is connected to the OpenVpn IP that we created *** <br />
+
+- check nginx status <br />
+<br />
+
+`sudo systemctl status nginx` <br />
+<br />
+<br />
+### Test Nginx and copy the HTML that we built previously <br />
+<br />
+- Test Nginx <br />
+
+Open the domain that we have created from Load Balancer or Route53 <br />
+<br />
+- Change the Permissions of the nginx html folder <br />
+<br />
+`sudo chown -R user:user html/`<br />
+<br />
+***Make sure you are in the nginx folder***<br />
+<br />
+- Copy Projects <br />
+<br />
+`scp -i keypair.pem -r build/* user@<IpEc2aapp>:/usr/share/nginx/html/` <br />
+<br />
+*Check again whether our app is running properly*<br />
+<br />
 ## 6. Creating a Simple Backend (Golang + Systemd + MySQL)
 ![7](https://github.com/user-attachments/assets/1964b165-ef8f-4c56-8325-ae6c4d2b38bc)
+<br />
+### DB Setup <br />
+<br />
+- Go to the DB server and Login to MySQL<br />
+<br />
+```
+ssh -i keypair.pem user@<IpDb> 
+mysql -u user -p password
+```
+<br />
+***Make sure you are connected to OpenVPN*** <br />
+<br />
+- Create data bases and tables <br />
+<br />
+```
+create database appDB;
+use appDB;
+create table images(
+         id int auto_increment primarykey,
+         url varchar(255),
+         created_at timestamp,
+);
+```
+<br />
+<br />
+### Golang setup <br />
+<br />
+- Install Golang <br />
+<br />
+`https://go.dev/doc/install` <br />
+<br />
+- Develop miniApi which is connected to DB <br />
+
+- Test run <br />
+<br />
+`go run main.go` <br />
+<br />
+- Test builds <br />
+<br />
+`go build main.go` <br />
+<br />
+### Deploy and Setup Systemd
 
 ## 7. Cloudfront Integration with ALB
 ![8](https://github.com/user-attachments/assets/f70e8bdb-2b98-4eb0-8b91-2a8e63414a2b)
