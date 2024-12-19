@@ -433,7 +433,7 @@ create table images(
 <br />
 ### Deploy and Setup Systemd
 <br />
-`sudo nano /etc/systemd/system/backend.service` <br />
+`sudo nano /etc/systemd/system/backend.service` 
 <br />
 - Replace <br />
 ```
@@ -529,7 +529,7 @@ Firewall = Create new Security Group <br />
 "Launch Instance" <br />
 <br />
 ### Access Instance using SSH <br />
-`ssh -i key.pem user@<ipaddress>` <br />
+`ssh -i key.pem user@<ipaddress>` 
 ***make sure connected to OpenVpn*** <br />
 - Install Depedencies <br />
 1. Jenkins <br />
