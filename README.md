@@ -336,16 +336,16 @@ Select the ALB that we created previously <br />
 - install node.js and npx <br /> 
 - create a new react project <br />
 <br />
-`npx create-react-app` <br />
+```npx create-react-app``` 
 <br />
 - change the script in the App.js file in the src folder <br />
 - Build apps <br />
 <br />
- `npm run build` <br />
+ ```npm run build```
  <br />
 - Test App <br />
 <br />
-`server -s build` <br />
+```server -s build```
 <br />
 <br />
 ### Setup Nginx <br />
@@ -366,8 +366,7 @@ sudo apt install nginx
 - check nginx status <br />
 <br />
 
-`sudo systemctl status nginx` <br />
-<br />
+```sudo systemctl status nginx```
 <br />
 ### Test Nginx and copy the HTML that we built previously <br />
 <br />
@@ -377,13 +376,13 @@ Open the domain that we have created from Load Balancer or Route53 <br />
 <br />
 - Change the Permissions of the nginx html folder <br />
 <br />
-`sudo chown -R user:user html/`<br />
+```sudo chown -R user:user html/```
 <br />
 ***Make sure you are in the nginx folder***<br />
 <br />
 - Copy Projects <br />
 <br />
-`scp -i keypair.pem -r build/* user@<IpEc2aapp>:/usr/share/nginx/html/` <br />
+```scp -i keypair.pem -r build/* user@<IpEc2aapp>:/usr/share/nginx/html/```
 <br />
 *Check again whether our app is running properly*<br />
 <br />
@@ -419,22 +418,21 @@ create table images(
 <br />
 - Install Golang <br />
 <br />
-`https://go.dev/doc/install` <br />
+```https://go.dev/doc/install```
 <br />
 - Develop miniApi which is connected to DB <br />
 
 - Test run <br />
 <br />
-`go run main.go` <br />
+```go run main.go```
 <br />
 - Test builds <br />
 <br />
-`go build main.go` <br />
+```go build main.go``` 
 <br />
 ### Deploy and Setup Systemd
 <br />
-`sudo nano /etc/systemd/system/backend.service` 
-<br />
+```sudo nano /etc/systemd/system/backend.service``` 
 - Replace <br />
 ```
 [unit]
@@ -529,7 +527,7 @@ Firewall = Create new Security Group <br />
 "Launch Instance" <br />
 <br />
 ### Access Instance using SSH <br />
-`ssh -i key.pem user@<ipaddress>` 
+```ssh -i key.pem user@<ipaddress>```
 ***make sure connected to OpenVpn*** <br />
 - Install Depedencies <br />
 1. Jenkins <br />
@@ -550,7 +548,7 @@ node -v
 npm -v 
 ```
 3. git <br />
-`apt-get install git`
+```apt-get install git```
 4 .go <br />
 <br />
 ### Setup And Login to Jenkins <br />
