@@ -388,6 +388,7 @@ Open the domain that we have created from Load Balancer or Route53 <br />
 *Check again whether our app is running properly*<br />
 <br />
 ## 6. Creating a Simple Backend (Golang + Systemd + MySQL)
+<br />
 ![7](https://github.com/user-attachments/assets/1964b165-ef8f-4c56-8325-ae6c4d2b38bc)
 <br />
 ### DB Setup <br />
@@ -431,14 +432,233 @@ create table images(
 `go build main.go` <br />
 <br />
 ### Deploy and Setup Systemd
+<br />
+`sudo nano /etc/systemd/system/backend.service` <br />
+<br />
+- Replace <br />
+```
+[unit]
+Description=Go backend
+After=multi-user.target
 
+[service]
+Type=simple
+User=root
+Group=root
+ExecStart=/home/user/backend/main
+Restart=always
+RestartSec=3
+
+[Install]
+WantedBy=multi-usert.target
+```
+<br />
+- Enable & Start Systemd service <br />
+```
+sudo systemctl enable backend.service
+sudo systemctl start backend.service
+```
+<br />
+- Test using a domain registered with Route53 <br />
+    (api.domain.com) <br />
+- if it works, change the apiURL in the Frontend project <br />
+- don't forget to build and deploy the frontend to the Ec2 App <br />
+<br />
 ## 7. Cloudfront Integration with ALB
 ![8](https://github.com/user-attachments/assets/f70e8bdb-2b98-4eb0-8b91-2a8e63414a2b)
+<br />
+### Create a certificate globally<br />
+- Search for ACM in the AWS console search bar<br />
+- Make sure you are in the US (Virginia) zone<br />
+- Request a new certificate<br />
+- Fill in the same domain and follow the creation instructions<br />
+- Click ID certificate -> Create records in Route53<br />
+- Wait until the Certificate status is "Issued"<br />
+<br />
+### Change HTTPS redirect rule to Cloudfront <br />
+- Set loadbalancer we created <br />
+- Select Http:80 -> Manage listeners -> add listeners <br />
+- Change "Routing actions" -> "Forward to target groups" <br />
+- Select target groups 80 <br />
+- "Save" <br />
+<br />
+### Setup Cloudfront <br />
+- Search for Cloudfront Service in AWS Console <br />
+- Create a Cloudfront distribution <br />
+<br />
+***ORIGIN*** <br />
+Origin domain = "Copy URL from Loadbalaner" <br />
+protocol = httponly (80) <br />
+Origin path = - <br />
+Name = "Same as domain" <br />
+Enable Origin = No <br />
+***Default Cache behavior*** <br />
+Viewers Protocol Policy = Redirect Http to https <br />
+Cache Policy =- Caching Optimized <br />
+Web app Firewall = Do not enable Security Protection (Temporary) <br />
+***Settings*** <br />
+Alternate Domain name = www.domain.com <br />
+SSL = "use the certificate we created" <br />
+"Create Distribution" <br />
+<br />
+### Point DNS to Cloudfront <br />
+- Search for Route53 Service in AWS Console <br />
+- Select the domain <br />
+- Edit domain record (www.domain.com) <br />
+- Route traffic to -> Alias ​​to Cloudfront distribution (select the id) <br />
+- "Save" <br />
+<br />
 
-## 8. Review dan Test Aplikasi
-
+## 8. Review dan Test Aplikasi <br />
+- Try accessing the Database without using OpenVpn to prevent leaks <br />
+- Try adding some data to the Database <br />
+- Try whether it appears in our app <br />
+<br />
 ## 9. CI/CD using Jenkins
 ![9](https://github.com/user-attachments/assets/ec18b291-ca44-49e4-aec0-ed844d2ad1cc)
+<br />
+### Create a new instance to install Jenkins with type (t3.medium) <br />
+Subnet = private-c/3 <br /> 
+Firewall = Create new Security Group <br />
+ - SSH (22) <br />
+   Source type = Custom (OpenVpn) <br />
+ - HTTP(80) <br />
+   Source type = Custom (OpenVpn) <br />
+ - HTTP(80) <br />
+   Source type = Custom (Loadbalancer) <br />
+"Launch Instance" <br />
+<br />
+### Access Instance using SSH <br />
+`ssh -i key.pem user@<ipaddress>` <br />
+***make sure connected to OpenVpn*** <br />
+- Install Depedencies <br />
+1. Jenkins <br />
+```
+sudo wget -O /usr/share/keyrings/jenkins-keyring.asc \
+  https://pkg.jenkins.io/debian-stable/jenkins.io-2023.key
+echo "deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc]" \
+  https://pkg.jenkins.io/debian-stable binary/ | sudo tee \
+  /etc/apt/sources.list.d/jenkins.list > /dev/null
+sudo apt-get update
+sudo apt-get install jenkins
+```
+2. Nodejs <br />
+```
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh | bash
+nvm install 22
+node -v 
+npm -v 
+```
+3. git <br />
+`apt-get install git`
+4 .go <br />
+<br />
+### Setup And Login to Jenkins <br />
+1. Install plug-ins <br />
+- Manage Jenkins -> Plug-ins -> Available plug-ins <br />
+- SSH agents <br />
+2. Add Credentials <br />
+- Profile -> Credentials <br />
+- Stores from parents -> click (global) -> Add credentials <br />
+  Kind = SSH username with key <br />
+  ID = "Create your ID" <br />
+  Username = User AWS Ec2 <br />
+  Private Key = (Enter directly) <br />
+  "ADD" <br />
+- Create <br />
+<br />
+### Create a Pipeline script <br />
+Add new item <br />
+Name = Deploy Backend <br />
+Select "Pipeline" <br />
+"OK" <br />
+- Create a Script in the available pipeline column <br />
+```
+  stage('Build') {
+     steps {
+         sh 'GOOS=linux GOARCH=amd64 go build -o main main.go'
+           }
+   }
+   stage('Remove existing main') {
+      steps {
+         script {
+            sshagent(credentials: ["ssh-key"]) {
+               sh "ssh ec2-user@${EC2_INSTANCE_IP} 'rm -rf ${APP_DIR}*'"
+                   }
+                 }
+               }
+    }
+    stage('Deploy to EC2') {
+       steps {
+          script {
+             sshagent(credentials: ["ssh-key"]) {
+                sh "scp -o StrictHostKeyChecking=no main ec2-user@${EC2_INSTANCE_IP}:${APP_DIR}"
+                    }
+                  }
+              }
+     }
+     stage('Restart service') {
+        steps {
+           script {
+              sshagent(credentials: ["ssh-key"]) {
+                 sh "ssh ec2-user@${EC2_INSTANCE_IP} 'sudo systemctl restart my_backend.service'"
+                      }
+                   }
+      }
 
+```
+"Save" <br />
+<br />
+- Add Rules To Ec2 Security Groups From Jenkins Source <br />
+  Type = SSH (22) <br />
+  Source = Custom (Jenkins) <br />
+- Add Cornjob to pollscm <br />
+- Try running "Build Now" <br />
+<br />
 ## 10. Cloudfront Cache Invalidation
 ![10](https://github.com/user-attachments/assets/db244773-e760-416a-abaa-a1514fe0e16a)
+<br />
+### Create an S3 Bucket <br />
+- Search for S3 in the AWS console searchbar <br />
+- Click "Create Bucket" <br />
+   Bucket name = "give a name" <br />
+   Object Ownership = All disabled <br />
+   inactive "Block all public access" <br />
+   Turn on "Acknowledge" <br />
+   Bucket Versioning = Disable <br />
+ "Create Buckets" <br />
+- Try uploading sample data <br />
+### Create a cloudfront distribution to point to sample data <br />
+- Select cloudfront <br /> 
+- Click "Create Distribution" <br />
+    Origin Domain = use S3 Bucket url <br />
+    Origin access = Origin access control setting <br />
+    (so that it can only be accessed via cloudfront) <br />
+    Origin access control = select S3 bucket url <br />
+    Viewer Protocol Policy = Redirect Http to Https <br />
+    Web app Firewall = Do not enable <br />
+    Alternate domain name = image.domain.com <br />
+    Custom SSL Certificate = Select the certificate that has been created <br />
+  "Create Distribution"<br />
+  <br />
+  
+### Set Permission <br />
+- Open the Distribution that has been created <br />
+- Select the origins bar <br />
+- Select the origin name then edit <br />
+- Click copy policy <br />
+- Enter to S3 Bucket <br />
+- Select the Permission bar <br />
+- Bucket policy -> Edit <br />
+- Paste Cloudfront policy <br />
+ "Save changes" <br />
+- Try accessing using Cloudfront Url <br />
+<br />
+***So that our data files are updated, we create a Cloudfront invalidation*** <br />
+<br />
+- To Cloudfront Service pages <br />
+- Select Invalidations in a bar <br />
+- Create Invalidations <br />
+- Add object path = /* <br />
+  "Create Invalidations" <br />
+  
