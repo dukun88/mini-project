@@ -202,19 +202,20 @@ Configure Storage = Default <br />
 "Launch Instance" <br />
 
 ### Creating RDS
+
 <br />
-*Before creating RDS, we create a "Subnet group" first*<br />
+*Before creating RDS, we create a "Subnet group" first* <br />
 <br />
 Search RDS on AWS console page <br />
 Select "Subnet groups" on side bar <br />
 Click "Create DB subnet group" <br />
 <br />
-**Subnet group details**<br />
+**Subnet group details** <br />
 Name = my-db-sbg <br />
 Description = my-db-sbg <br />
 VPC = isw-vpc <br />
 <br />
-**Add Subnet** <br />
+*Add Subnet* <br />
 <br />
 *Because we need at least 2 Availability zones, we create a new subnet in a different Availability zone* <br />
 After creating a new subnet we select both availability zone and subnet. <br />
