@@ -249,7 +249,7 @@ Availability Zone = Choose the same as ec2 <br />
 
 ### Creating ALB
 <br />
-*Before creating an ALB, we create a "Target group" first*<br />
+Before creating an ALB, we create a "Target group" first<br />
 <br />
 Search "Target Group" on AWS console page <br />
 Click "Create target group" <br />
@@ -264,7 +264,7 @@ Regiter Target = Select Ec2 app <br />
 "Include As pending below"<br />
 "Create" <br />
 <br />
-***Repeat the steps for backend port 8080*** <br />
+Repeat the steps for backend port 8080 <br />
 <br />
 *then we create a new public subnet because we need 2 Availability zones to create a loadbalancer*<br />
 <br />
