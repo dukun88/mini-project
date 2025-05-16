@@ -350,8 +350,8 @@ Select the ALB that we created previously <br />
 ```server -s build```
 <br />
 <br />
-### Setup Nginx <br />
-
+### Setup Nginx 
+<br />
 - Log in to the ec2-app server and install nginx <br />
 <br />
 
