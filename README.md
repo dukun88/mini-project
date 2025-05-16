@@ -335,6 +335,7 @@ Select the ALB that we created previously <br />
 ### React Setup <br />
 - install node.js and npx <br /> 
 - create a new react project <br />
+
 <br />
 ```npx create-react-app``` 
 <br />
